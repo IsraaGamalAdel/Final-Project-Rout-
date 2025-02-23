@@ -1,6 +1,7 @@
 import joi from 'joi';
 import { Types } from 'mongoose';
-import { genderTypes } from './auth.middleware.js';
+import { genderTypes } from '../DB/model/User.model.js';
+
 
 
 

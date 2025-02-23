@@ -4,6 +4,17 @@ import * as bcrypt from "bcrypt";
 import CryptoJS from "crypto-js";
 
 
+export const genderTypes = {
+    male: "male",
+    female: "female"
+};
+
+
+export const providerTypes = {
+    google: "google",
+    system: "system"
+};
+
 const userSchema = new Schema({
     firstName : {
         type: String,
@@ -42,17 +53,13 @@ const userSchema = new Schema({
     forgotPasswordOTP: String,
     provider: {
         type: String,
-        enum: Object.values(authMiddlewareTypes.providerTypes),
-        default: authMiddlewareTypes.providerTypes.system
-    },
-    googleId:{
-        type: String,
-        unique: true
+        enum: Object.values(providerTypes),
+        default: providerTypes.system
     },
     gender: {
         type: String,
-        enum: Object.values(authMiddlewareTypes.genderTypes),
-        default: authMiddlewareTypes.genderTypes.male
+        enum: Object.values(genderTypes),
+        default: genderTypes.male
     },
     DOB: Date,
     phone: String,
@@ -102,6 +109,7 @@ userSchema.pre("save", async function (next) {
     }
     next();
 });
+
 userSchema.methods.comparePassword  = async function(plainPassword){
     return await bcrypt.compare(plainPassword , this.password)
 }

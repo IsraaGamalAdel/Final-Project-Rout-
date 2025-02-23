@@ -1,12 +1,11 @@
 import { OAuth2Client } from 'google-auth-library';
-import {userModel} from "../../../DB/model/User.model.js";
+import {providerTypes, userModel} from "../../../DB/model/User.model.js";
 import { roleTypes } from '../../../middleware/auth.middleware.js';
 import { errorAsyncHandler } from "../../../utils/response/error.response.js";
 import { successResponse } from '../../../utils/response/success.response.js';
 import {  decodeToken, generateToken2, tokenTypes } from "../../../utils/token/token.js";
 import { compareHash } from "../../../utils/security/hash.security.js";
 import * as dbService from '../../../DB/db.service.js';
-import * as authMiddlewareTypes from '../../../middleware/auth.middleware.js';
 
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -28,7 +27,7 @@ export const signIn = errorAsyncHandler(
             return next(new Error("User email not confirmed", { cause: 401 }));
         }
 
-        if (user.provider !== authMiddlewareTypes.providerTypes.system) {
+        if (user.provider !== providerTypes.system) {
             return next(new Error("Invalid provider type", { cause: 403 }));
         }
 
@@ -175,7 +174,7 @@ export const refreshToken = errorAsyncHandler(
 
 //     let user = await dbService.findOne({
 //         model: userModel,
-//         filter: { googleId, provider: authMiddlewareTypes.providerTypes.google }
+//         filter: { googleId, provider: providerTypes.google }
 //     });
 
 //     if (!user) {
@@ -196,7 +195,7 @@ export const refreshToken = errorAsyncHandler(
 //                 email,
 //                 googleId,
 //                 confirmEmail: true,
-//                 provider: authMiddlewareTypes.providerTypes.google,
+//                 provider: providerTypes.google,
 //                 role: roleTypes.User
 //             }
 //         });

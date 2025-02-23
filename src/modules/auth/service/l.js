@@ -101,11 +101,6 @@ export const googleLogin = errorAsyncHandler(async (req, res, next) => {
 });
 
 
-
-
-
-
-
 export const googleLogin1 = errorAsyncHandler(
     async (req, res, next) => {
         const { email, userName, googleId } = req.body;
@@ -180,32 +175,6 @@ export const googleLogin1 = errorAsyncHandler(
 
 
 
-
-
-
-
-
-
-
-
-
-import bcrypt from "bcryptjs";
-import { userModel } from "../models/userModel.js";
-import { errorAsyncHandler } from "../utils/errorHandler.js";
-import { dbService } from "../services/dbService.js";
-import { successResponse } from "../utils/successResponse.js";
-import crypto from "crypto";
-import { emailEvent } from "../events/emailEvent.js";
-
-const encryptPhone = (phone) => {
-    const secretKey = process.env.SECRET_KEY || "defaultSecretKey";
-    const iv = crypto.randomBytes(16); // Initialization Vector
-    const cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(secretKey), iv);
-    let encrypted = cipher.update(phone, "utf8", "hex");
-    encrypted += cipher.final("hex");
-    return `${iv.toString("hex")}:${encrypted}`;
-};
-
 userModel.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
@@ -217,44 +186,4 @@ userModel.pre("save", async function (next) {
     } catch (error) {
         return next(error);
     }
-});
-
-// 🧑‍💻 التسجيل وإنشاء حساب جديد
-export const signup = errorAsyncHandler(async (req, res, next) => {
-    const { userName, email, password, confirmPassword, phone } = req.body;
-
-    // ✅ التحقق من تطابق كلمتي المرور
-    if (password !== confirmPassword) {
-        return next(new Error("Password and confirm password do not match.", { cause: 400 }));
-    }
-
-    // ✅ التحقق من وجود البريد الإلكتروني مسبقًا
-    if (await dbService.findOne({ model: userModel, filter: { email } })) {
-        return next(new Error("User already exists.", { cause: 409 }));
-    }
-
-    // ✅ التحقق من صحة رقم الهاتف (اختياري)
-    if (!/^\+?\d{10,15}$/.test(phone)) {
-        return next(new Error("Invalid phone number format.", { cause: 400 }));
-    }
-
-    // 📞 تشفير رقم الهاتف
-    const encryptedPhone = encryptPhone(phone);
-
-    // 🛠️ إنشاء المستخدم في قاعدة البيانات
-    const user = await dbService.create({
-        model: userModel,
-        data: { userName, email, password, phone: encryptedPhone },
-    });
-
-    // 📧 إرسال بريد إلكتروني لتأكيد الحساب
-    emailEvent.emit("sendConfirmEmail", { id: user._id, email });
-
-    // ✅ الاستجابة الناجحة
-    return successResponse({
-        res,
-        message: "User successfully created.",
-        status: 201,
-        data: { userId: user._id },
-    });
 });

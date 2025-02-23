@@ -50,7 +50,6 @@ export const validation = (scheme) => {
 
         if( req.file || req.files?.length){
             inputDate.file =  req.file || req.files ;
-            // inputDate.file = { ...req.file , ...req.files };
         }
         
         const validationError = scheme.validate( inputDate , {abortEarly: false});

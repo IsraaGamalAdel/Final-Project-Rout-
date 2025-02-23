@@ -78,23 +78,3 @@ export const signupValidationSchema_old = {
         lang: joi.string().valid('en' , 'ar').default('en')
     }).options({allowUnknown: false}).required(),
 };
-
-
-
-// Joi Schema للتعليم
-// const signupValidationSchema = joi.object().keys({
-//     userName: joi.string().required().min(2).max(50).required(), // min 2 and max 50 as length
-//     email: joi.string().email({minDomainSegments: 2,maxDomainSegments: 3, tlds: {allow: ['com' ,'net' , 'edu']}}).required(),
-//     password: joi.string().pattern(new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z]).{8,}$/)).required(),
-//     confirmPassword: joi.string().valid(joi.ref('password')).required(),
-//     phone: joi.string().pattern(new RegExp(/^(002|\+2)?01[0125][0-9]{8}$/)).required(),
-//     age: joi.number().positive().min(16).max(130),  //min 16 and max 130 as value
-//     // DOB: joi.date().greater(new Date()), // greater than current date لو عاوزة اعمل حاجة فى اليوم الى بعدة او الشهر او السنة الى بعدها 
-//     // DOB: joi.date().less(new Date()),
-//     DOB: joi.date().less("now"),
-//     flag: joi.boolean().sensitive(true).falsy(0).truthy(1),
-// }).options({allowUnknown: false}).required();
-
-
-
-

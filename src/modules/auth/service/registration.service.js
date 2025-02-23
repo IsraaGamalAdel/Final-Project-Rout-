@@ -56,45 +56,6 @@ export const  VerifyConfirmEmail = errorAsyncHandler(
             return next(error);
         }
 
-        // if (user.otpBlockedUntil && user.otpBlockedUntil > new Date()) {
-        //     const remainingTime = Math.ceil((user.otpBlockedUntil - new Date()) / 60000);
-        //     return next(new Error(`To many failed attempts. Please try again in ${remainingTime} minutes.`, { cause: 400 }));
-        // }
-        
-        // if(new Date() > user.otpExpiresAt){
-        //     if (new Date() > user.otpExpiresAt) {
-        //         await dbService.updateOne({
-        //             model: userModel,
-        //             filter: {email},
-        //             data: {
-        //                 $unset: {emailOTP: 1, otpExpiresAt: 1, otpBlockedUntil: 1 , otpAttempts: 1},
-        //                 // $set: { otpAttempts: 0 }
-        //             }
-        //         });
-            
-        //         return next(new Error("OTP expired", { cause: 400 }));
-        //     }
-        // }
-
-        // if(!compareHash({plainText: `${code}` , hashValue: user.emailOTP})){
-        //     const counterOtpAttempts = (user.otpAttempts || 0) + 1;
-
-        //     if (counterOtpAttempts >= 5) {
-        //         // 5 minutes block user
-        //         await userModel.updateOne({ email }, {  
-        //             otpBlockedUntil: new Date(Date.now() + 5 * 60000), 
-        //             otpAttempts: 0 
-        //         });
-        //         return next(new Error("To many failed attempts. Please try again in 5 minutes.", { cause: 400 }));
-        //     }
-        //     await userModel.updateOne({ email }, { otpAttempts: counterOtpAttempts });
-        //         return next(new Error( 
-        //             `Invalid OTP code, please check code to email, Attempts remaining: ${counterOtpAttempts - 0} / 5 `, 
-        //             { cause: 400 }
-        //         )
-        //     );
-        // }
-
         await dbService.updateOne({
             model: userModel,
             filter: {email} , 

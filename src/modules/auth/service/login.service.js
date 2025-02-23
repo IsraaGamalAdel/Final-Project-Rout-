@@ -12,37 +12,37 @@ import * as authMiddlewareTypes from '../../../middleware/auth.middleware.js';
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const signIn = errorAsyncHandler(
-    async (req , res ,next) => {
-        const {email} = req.body;
+    async (req, res, next) => {
+        const { email, password } = req.body;
 
-        const user  = await dbService.findOne({
+        const user = await dbService.findOne({
             model: userModel,
-            filter: {email}
-        })
+            filter: { email },
+        });
 
-        // user
-        if(!user){
-            return next(new Error("user not found" , {cause: 404}));
+        if (!user) {
+            return next(new Error("User not found", { cause: 404 }));
         }
 
-        // confirmEmail
-        if (!user.confirmEmail){
-            return next(new Error("user not confirmEmail" , {cause: 401}));
+        if (!user.confirmEmail) {
+            return next(new Error("User email not confirmed", { cause: 401 }));
         }
 
-        // system provider
         if (user.provider !== authMiddlewareTypes.providerTypes.system) {
             return next(new Error("Invalid provider type", { cause: 403 }));
         }
 
-        // blocked user
         if (user.bannedAt) {
             return next(new Error("User is banned", { cause: 403 }));
-        }  
+        }
 
-        // deleted user
         if (user.deleted) {
             return next(new Error("User account is deleted", { cause: 403 }));
+        }
+
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return next(new Error("In_valid account password not match" , { cause: 404 }));
         }
 
         user.deleted = false;
@@ -50,23 +50,33 @@ export const signIn = errorAsyncHandler(
         await user.save();
 
         const accessToken = generateToken2({
-            payload: {id:user._id , isLoggedIn :true},
-            signature: user.role ===  roleTypes.Admin ? process.env.SYSTEM_ACCESS_TOKEN : process.env.USER_ACCESS_TOKEN ,
-            options: { expiresIn: '1h' }
-        })
-        const refreshToken = generateToken2({
-            payload: {id:user._id , isLoggedIn :true},
-            signature: user.role === roleTypes.Admin ? process.env.SYSTEM_REFRESH_TOKEN : process.env.USER_REFRESH_TOKEN ,
-            options: { expiresIn: '7d' }
-        })
+            payload: { id: user._id, isLoggedIn: true },
+            signature:
+                user.role === roleTypes.Admin
+                    ? process.env.SYSTEM_ACCESS_TOKEN
+                    : process.env.USER_ACCESS_TOKEN,
+            options: { expiresIn: "1h" },
+        });
 
-        return successResponse({ res, message:"Welcome User to your account (login)", status:200 ,
+        const refreshToken = generateToken2({
+            payload: { id: user._id, isLoggedIn: true },
+            signature:
+                user.role === roleTypes.Admin
+                    ? process.env.SYSTEM_REFRESH_TOKEN
+                    : process.env.USER_REFRESH_TOKEN,
+            options: { expiresIn: "7d" },
+        });
+
+        return successResponse({
+            res,
+            message: "Welcome User to your account (login)",
+            status: 200,
             data: {
                 token: {
                     accessToken,
-                    refreshToken
-                }
-            }
+                    refreshToken,
+                },
+            },
         });
     }
 );
@@ -75,34 +85,26 @@ export const login = errorAsyncHandler(
     async (req, res, next) => {
 
         const { email , password} = req.body;
-
+        
         const user = await dbService.findOne({
             model: userModel,
-            filter: {
-                email , 
-            }
+            filter: {email}
         });
 
         if(!user){
             return next(new Error("In_valid account user not found" , {cause: 404}));
         }
-
-        if (user.bannedAt) {
-            return next(new Error("User is banned", { cause: 403 }));
-        }
-
         if(!user.confirmEmail){
             return next(new Error("In_valid account user not confirmEmail" , {cause: 401}));
         }
-
-        // const match = compareHash({
-        //     plainText: password,
-        //     hashValue: user.password
-        // }) // match password and hash password   // password to frontend and hash password to DB
+        const match = compareHash({
+            plainText: password,
+            hashValue: user.password
+        }) // match password and hash password   // password to frontend and hash password to DB
         
-        // if(!match){
-        //     return next(new Error("In_valid account password not match" ,{cause: 404}));
-        // }
+        if(!match){
+            return next(new Error("In_valid account password not match" ,{cause: 404}));
+        }
         
         user.deleted = false;
         user.changeCredentialsTime = Date.now();

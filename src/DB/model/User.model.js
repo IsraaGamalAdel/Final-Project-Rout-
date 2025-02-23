@@ -15,6 +15,7 @@ export const providerTypes = {
     system: "system"
 };
 
+
 const userSchema = new Schema({
     firstName : {
         type: String,
@@ -93,9 +94,17 @@ const userSchema = new Schema({
 userSchema.virtual('userName').set(function(value) {
     this.firstName = value.split(" ")[0]
     this.lastName = value.split(" ")[1]
-}).get(function(){
-    return this.firstName + " " + this.lastName
-})
+}).get(function() {
+    return `${this.firstName || ""} ${this.lastName || ""}`.trim();
+});
+
+
+
+// }).get(function(){
+//     return this.firstName + " " + this.lastName
+// })
+
+
 
 // hash password and encrypt phone ( Hooks )
 userSchema.pre("save", async function (next) {

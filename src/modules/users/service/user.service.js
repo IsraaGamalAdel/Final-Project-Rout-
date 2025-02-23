@@ -1,7 +1,7 @@
 import * as dbService from "../../../DB/db.service.js";
 import {userModel} from "../../../DB/model/User.model.js";
 import { errorAsyncHandler } from './../../../utils/response/error.response.js';
-import { generateEncryption } from './../../../utils/security/encryption.security.js';
+import { decodeEncryption, generateEncryption } from './../../../utils/security/encryption.security.js';
 import { successResponse } from './../../../utils/response/success.response.js';
 import { compareHash, generateHash } from './../../../utils/security/hash.security.js';
 import { emailEvent } from './../../../utils/events/sendEmailEvent.js';
@@ -44,7 +44,7 @@ export const GetProfileDataForAnotherUser = errorAsyncHandler(
         const user = await dbService.findOne({
             model: userModel,
             filter: { _id: userId },
-            select: 'userName phone profilePic coverPic'
+            select: 'firstName lastName phone profilePic coverPic'
         });
 
         if (!user) {
@@ -54,10 +54,6 @@ export const GetProfileDataForAnotherUser = errorAsyncHandler(
         user.phone = decodeEncryption({ cipherText: user.phone});
 
         const userData = user.toObject();
-
-        // if (userData.phone) {
-        //     userData.phone = decodeEncryption({ cipherText: userData.phone });
-        // }
 
         delete userData.id;
         delete userData._id;

@@ -17,6 +17,13 @@ router.get('/profile' ,
     userService.getLoginUserAccountData
 );
 
+
+// Get Profile Data For Another User
+router.get('/profile/:userId' , 
+    authentication() , 
+    userService.GetProfileDataForAnotherUser
+);
+
 // userProfile
 router.patch('/update_User_Account' , 
     validation(validators.updateUserValidation), 

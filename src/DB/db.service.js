@@ -31,6 +31,12 @@ export const findByIdAndUpdate = async ({ model , id = "" , data = {} , options 
     return document ; 
 };
 
+// findById
+export const findById = async ({ model , id = "" , select = "" , populate = []} = {}) => {
+    const document = await model.findById(id).select(select).populate(populate);
+    return document ; 
+};
+
 // updateOne
 export const updateOne = async ({ model , filter = {} , data = {} , options = {} } = {}) => {
     const document = await model.updateOne(filter , data , options );

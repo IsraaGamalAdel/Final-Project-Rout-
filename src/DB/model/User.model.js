@@ -4,6 +4,18 @@ import * as bcrypt from "bcrypt";
 import CryptoJS from "crypto-js";
 
 
+export const genderTypes = {
+    male: "male",
+    female: "female"
+};
+
+
+export const providerTypes = {
+    google: "google",
+    system: "system"
+};
+
+
 const userSchema = new Schema({
     firstName : {
         type: String,
@@ -42,17 +54,13 @@ const userSchema = new Schema({
     forgotPasswordOTP: String,
     provider: {
         type: String,
-        enum: Object.values(authMiddlewareTypes.providerTypes),
-        default: authMiddlewareTypes.providerTypes.system
-    },
-    googleId:{
-        type: String,
-        unique: true
+        enum: Object.values(providerTypes),
+        default: providerTypes.system
     },
     gender: {
         type: String,
-        enum: Object.values(authMiddlewareTypes.genderTypes),
-        default: authMiddlewareTypes.genderTypes.male
+        enum: Object.values(genderTypes),
+        default: genderTypes.male
     },
     DOB: Date,
     phone: String,
@@ -74,6 +82,7 @@ const userSchema = new Schema({
     
     deletedAt: Date,
     bannedAt: Date,
+    blockedUsers: [{type:Types.ObjectId , ref: "User"}],
     updatedBy: {type:Types.ObjectId , ref: "User"}
 },{
     timestamps: true,
@@ -86,9 +95,17 @@ const userSchema = new Schema({
 userSchema.virtual('userName').set(function(value) {
     this.firstName = value.split(" ")[0]
     this.lastName = value.split(" ")[1]
-}).get(function(){
-    return this.firstName + " " + this.lastName
-})
+}).get(function() {
+    return `${this.firstName || ""} ${this.lastName || ""}`.trim();
+});
+
+
+
+// }).get(function(){
+//     return this.firstName + " " + this.lastName
+// })
+
+
 
 // hash password and encrypt phone ( Hooks )
 userSchema.pre("save", async function (next) {
@@ -102,6 +119,7 @@ userSchema.pre("save", async function (next) {
     }
     next();
 });
+
 userSchema.methods.comparePassword  = async function(plainPassword){
     return await bcrypt.compare(plainPassword , this.password)
 }

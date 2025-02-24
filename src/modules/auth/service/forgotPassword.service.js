@@ -15,7 +15,13 @@ export const forgotPasswordOTP = errorAsyncHandler(
 
         const user = await dbService.findOne({
             model: userModel,
-            filter: {email , deleted: {$exists: false} }
+            filter: {
+                email,
+                $or: [
+                    { deleted: { $exists: false } }, 
+                    { deleted: false }
+                ]
+            }
         });
 
         if(!user){
@@ -36,7 +42,13 @@ export const resetPasswordOTP = errorAsyncHandler(
         // const user = await userModel.findOne({ email });
         const user = await dbService.findOne({
             model: userModel,
-            filter: { email , deleted: {$exists: false}}
+            filter: {
+                email,
+                $or: [
+                    { deleted: { $exists: false } },
+                    { deleted: false }
+                ]
+            }
         });
         
         if (!user) {
@@ -120,3 +132,5 @@ export const resetPasswordOTP = errorAsyncHandler(
         //         )
         //     );
         // }
+
+        

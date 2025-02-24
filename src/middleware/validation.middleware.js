@@ -1,6 +1,7 @@
 import joi from 'joi';
 import { Types } from 'mongoose';
-import { genderTypes } from './auth.middleware.js';
+import { genderTypes } from '../DB/model/User.model.js';
+
 
 
 
@@ -50,7 +51,6 @@ export const validation = (scheme) => {
 
         if( req.file || req.files?.length){
             inputDate.file =  req.file || req.files ;
-            // inputDate.file = { ...req.file , ...req.files };
         }
         
         const validationError = scheme.validate( inputDate , {abortEarly: false});

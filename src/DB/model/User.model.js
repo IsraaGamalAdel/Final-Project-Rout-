@@ -82,6 +82,7 @@ const userSchema = new Schema({
     
     deletedAt: Date,
     bannedAt: Date,
+    blockedUsers: [{type:Types.ObjectId , ref: "User"}],
     updatedBy: {type:Types.ObjectId , ref: "User"}
 },{
     timestamps: true,

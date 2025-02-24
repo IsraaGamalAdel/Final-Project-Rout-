@@ -3,6 +3,7 @@ import connectDB from './DB/connection.js';
 import { globalErrorHandling } from './utils/response/error.response.js';
 import authController from'./modules/auth/auth.controller.js';
 import usersController from './modules/users/user.controller.js';
+import adminController from './modules/admin/admin.controller.js';
 import cors from 'cors'; // upload Deployment 
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -27,6 +28,7 @@ const bootstrap = async (app , express) => {
     app.use('/graphql' , createHandler({schema}));
     app.use('/auth' , authController);
     app.use('/users' , usersController);
+    app.use('/admin' , adminController);
 
     app.use(globalErrorHandling);
 

@@ -57,15 +57,26 @@ const companySchema = new Schema({
     }],
     bannedAt: Date,
     deletedAt: Date,
+    deletedBy: {
+        type: Types.ObjectId,   
+        ref: "User"
+    },
 
     legalAttachment: { secure_url: String , public_id: String },
 
     approvedByAdmin: { type: Boolean, }
 } , {
-    timestamps: true
+    timestamps: true,
+    toObject: {virtuals: true},
+    toJSON: {virtuals: true}
 });
 
-
+companySchema.virtual("jobs", {
+    ref: "JobOpportunity",
+    localField: "_id",
+    foreignField: "companyId",
+});
+console.log(companySchema);
 
 
 export const companyModel = mongoose.models.Company  || model("Company" , companySchema);

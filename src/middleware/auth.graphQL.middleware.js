@@ -26,6 +26,7 @@ export const authentication = async({authorization , tokenType = tokenTypes.acce
                 break;
         }
         const decoded = verifyToken2({ token , signature : tokenType === tokenTypes.access ? accessSignature : refreshSignature });
+
         if(!decoded?.id){
             throw new Error("invalid token" );
         }
@@ -39,8 +40,9 @@ export const authentication = async({authorization , tokenType = tokenTypes.acce
             throw new Error("In_valid account user not found");
         }
     
-        if(user.changeCredentialsTime?.getTime() >= decoded.iat * 1000){
-            throw new Error("Expired Token Credentials access user not found");
+        const tolerance = 5000; // 5 seconds
+        if (user.changeCredentialsTime?.getTime() >= decoded.iat * 1000 + tolerance) {
+            throw new Error("Expired Token: Credentials have changed");
         }
     
         return user;

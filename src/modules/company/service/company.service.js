@@ -7,6 +7,7 @@ import { roleTypes } from '../../../middleware/auth.middleware.js';
 
 
 
+
 export const addCompany = errorAsyncHandler(
     async (req, res, next) => {
         const { companyName, companyEmail } = req.body;
@@ -52,6 +53,7 @@ export const addCompany = errorAsyncHandler(
             data: {
                 ...req.body,
                 CreatedBy: req.user._id,
+                approvedByAdmin: false,
                 ...updateData
             },
         });

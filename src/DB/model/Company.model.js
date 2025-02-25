@@ -67,8 +67,8 @@ const companySchema = new Schema({
     approvedByAdmin: { type: Boolean, }
 } , {
     timestamps: true,
-    toObject: {virtuals: true},
-    toJSON: {virtuals: true}
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
 });
 
 companySchema.virtual("jobs", {
@@ -76,7 +76,7 @@ companySchema.virtual("jobs", {
     localField: "_id",
     foreignField: "companyId",
 });
-console.log(companySchema);
+
 
 
 export const companyModel = mongoose.models.Company  || model("Company" , companySchema);

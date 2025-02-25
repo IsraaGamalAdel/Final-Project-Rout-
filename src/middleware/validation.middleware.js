@@ -41,6 +41,7 @@ export const generalFields = {
     fileObject,
     files: joi.object(fileObject),
     address: joi.string().pattern(new RegExp(/^[a-zA-Z\u0621-\u064Aء-ئ0-9][^#&<>\"~;$^%{}?]{2,100}$/)),
+    description: joi.string().min(2).max(1000).trim()
 }; 
 
 

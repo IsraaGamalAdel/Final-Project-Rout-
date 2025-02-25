@@ -3,7 +3,6 @@ import { userModel } from "../../../DB/model/User.model.js";
 import { errorAsyncHandler } from "../../../utils/response/error.response.js";
 import { successResponse } from "../../../utils/response/success.response.js";
 import { companyModel } from './../../../DB/model/Company.model.js';
-import mongoose from "mongoose";
 
 
 export const blockUser = errorAsyncHandler(

@@ -6,15 +6,19 @@ import { fileValidationTypes } from './../../utils/multer/local.multer.js';
 import { validation } from '../../middleware/validation.middleware.js';
 import * as validators from './company.validation.js';
 import { endPoint } from "./company.endpoint.js";
+import  jobsController from '../jobs/jobs.controller.js';
 
 
 
-const router = Router();
+const router = Router({caseSensitive: true , strict: true});
+
+router.use("/:companyId?/jobs" , jobsController);
+
 
 router.post('/addCompany' , authentication() , authorization(endPoint.admin) , 
     uploadCloudinaryFile(fileValidationTypes.image).fields([
         { name: 'logo', maxCount: 1 },
-        { name: 'coverPic', maxCount: 3 }
+        { name: 'coverPic', maxCount: 5 }
     ]),
     validation(validators.createCompanyValidation) ,
     userService.addCompany
@@ -23,7 +27,7 @@ router.post('/addCompany' , authentication() , authorization(endPoint.admin) ,
 router.patch( '/updateCompany/:companyId', authentication(), authorization(endPoint.admin),
     uploadCloudinaryFile(fileValidationTypes.image).fields([
         { name: 'logo', maxCount: 1 },
-        { name: 'coverPic', maxCount: 3 }
+        { name: 'coverPic', maxCount: 5 }
     ]),
     validation(validators.updateCompanyValidation),
     userService.updateCompany

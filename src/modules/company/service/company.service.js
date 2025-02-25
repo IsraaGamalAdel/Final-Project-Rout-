@@ -47,7 +47,6 @@ export const addCompany = errorAsyncHandler(
             }
         }
 
-
         const newCompany = await dbService.create({
             model: companyModel,
             data: {
@@ -58,9 +57,13 @@ export const addCompany = errorAsyncHandler(
             },
         });
 
+        const idData = newCompany.toObject();
+
+        delete idData.id;
+
         return successResponse({ res, message: "Company added successfully", status: 201,
             data: {
-                company: newCompany
+                company: {idData}
             },
         });
     }
@@ -176,12 +179,16 @@ export const updateCompany = errorAsyncHandler(
             return next(new Error("Company update failed", { cause: 500 }));
         }
 
+        const idData = updatedCompany.toObject();
+
+        delete idData.id;
+
         return successResponse({
             res,
             message: "Company updated successfully",
             status: 200,
             data: {
-                company: updatedCompany,
+                company: idData,
             },
         });
     }
@@ -210,11 +217,15 @@ export const SoftDeleteCompanyName = errorAsyncHandler(
             return next(new Error("Company not found or not authorized", { cause: 404 }));
         }
 
+        const idData = company.toObject();
+
+        delete idData.id;
+
         return successResponse({
             res,
             message: "Company soft deleted successfully",
             status: 200,
-            data: { company }
+            data: { idData }
         });
     }
 );
@@ -245,9 +256,13 @@ export const SoftDeleteCompany = errorAsyncHandler(
             return next(new Error("Company not found or not authorized", { cause: 404 }));
         }
 
+        const idData = company.toObject();
+
+        delete idData.id;
+
         return successResponse({ res, message: "Company soft deleted successfully", status: 200,
             data: {
-                company
+                idData
             }
         });
     }
@@ -279,12 +294,16 @@ export const restoreCompany = errorAsyncHandler(
             return next(new Error("Company not found or not authorized", { cause: 404 }));
         }
 
+        const idData = company.toObject();
+
+        delete idData.id;
+
         return successResponse({
             res,
             message: "Company restored successfully",
             status: 200,
             data: {
-                company
+                idData
             },
         })
     }
@@ -301,11 +320,9 @@ export const getCompanyWithJobs = errorAsyncHandler(
                 _id: req.params.companyId,
                 deletedAt: { $exists: false },
             },
-            options: {
-                populate: {
-                    path: "jobs",
-                    select: "title description",
-                },
+            populate: {
+                path: "jobs",
+                select: "jobTitle  jobDescription",
             },
         });
 
@@ -313,12 +330,16 @@ export const getCompanyWithJobs = errorAsyncHandler(
             return next(new Error("Company not found", { cause: 404 }));
         }
 
+        const idData = company.toObject();
+
+        delete idData.id;
+
         return successResponse({
             res,
             message: "Company with related jobs retrieved successfully",
             status: 200,
             data: {
-                company
+                company : idData
             }
         });
 
@@ -376,7 +397,7 @@ export const deleteCompanyLogo = errorAsyncHandler(
         if(company.logo && company.logo.public_id){
             await cloudinary.uploader.destroy(company.logo.public_id);
         }else{
-            return next(new Error("Image already deleted successfully", { cause: 200 }));
+            return next(new Error("Image already deleted successfully", { cause: 409 }));
         }
 
         const updatedCompany = await dbService.findOneAndUpdate({
@@ -392,9 +413,13 @@ export const deleteCompanyLogo = errorAsyncHandler(
             }
         });
 
+        const idData = updatedCompany.toObject();
+
+        delete idData.id;
+
         return successResponse({ res, message: "Company logo deleted successfully", status: 200,
             data: {
-                company: updatedCompany
+                company: idData
             },
         })
     }
@@ -452,11 +477,15 @@ export const deleteCompanyCoverPic = errorAsyncHandler(
         company.coverPic = [];
         await company.save();
 
+        const idData = company.toObject();
+
+        delete idData.id;
+
         return successResponse({
             res,
             message: "All cover pictures deleted successfully",
             status: 200,
-            data: { company },
+            data: { company :idData },
         });
     }
 );

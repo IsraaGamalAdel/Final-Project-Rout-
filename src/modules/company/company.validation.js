@@ -8,7 +8,7 @@ import { generalFields } from '../../middleware/validation.middleware.js';
 export const createCompanyValidation = joi.object().keys({
     companyName: generalFields.userName.required(),
     companyEmail: generalFields.email.required(),
-    description: joi.string().min(2).max(1000).trim(),
+    description: generalFields.description,
     address: generalFields.address.required(),
     industry: joi.string().required(),
     numberOfEmployees: joi.string().required(),

@@ -18,10 +18,10 @@ router.patch("/sendCode_confirm_email", validation(validators.sendCodeOTPVerifyC
 
 // login
 router.post("/login", validation(validators.loginValidationSchema) , loginService.login);
+// login to email
+router.post("/loginWithGmail" , loginService.signIn);
 
-// router.post("/google_login" , validation(validators.googleLoginValidationSchema) , loginService.googleLogin);
-
-router.post("/sign_in" , validation(validators.loginValidationSchema) , loginService.signIn);
+// refresh Token
 router.get("/refreshToken" , loginService.refreshToken);
 
 // forgotPassword OTP

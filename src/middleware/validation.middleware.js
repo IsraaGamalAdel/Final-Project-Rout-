@@ -32,7 +32,7 @@ export const generalFields = {
     password: joi.string().pattern(new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z]).{8,}$/)),
     confirmPassword: joi.string(),
     phone: joi.string().pattern(new RegExp(/^(002|\+2)?01[0125][0-9]{8}$/)),
-    acceptLanguage: joi.string().valid('en' , 'ar').default('en'),
+    acceptLanguage: joi.string().valid('en' , 'ar' ,'en-US' ,"en-US,en;q=0.9").default('en'),
     gender: joi.string().valid(...Object.values(genderTypes)),
     DOB: joi.date().less("now"),
     id: joi.string().custom(validationObjectId),

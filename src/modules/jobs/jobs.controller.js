@@ -6,8 +6,12 @@ import * as validators from './jobs.validation.js';
 import * as jobsService from './service/jobs.service.js';
 
 
+// import applicationController from '../application/application.controller.js';
+
 
 const router = Router({mergeParams: true , caseSensitive: true , strict: false});
+
+// router.use("/:jobId?/application" , applicationController);
 
 
 router.post("/" , 
@@ -42,9 +46,3 @@ jobsService.getAllJobsPagination
 export default router;
 
 
-// import applicationController from '../application/application.controller.js';
-
-
-// const router = Router({mergeParams: true , caseSensitive: true , strict: false});
-
-// router.use("/:jobId?/application" , applicationController);

@@ -75,6 +75,11 @@ export const signIn = errorAsyncHandler(
                     accessToken,
                     refreshToken,
                 },
+                user: {
+                    userName: user.userName,
+                    role: user.role,
+                    email: user.email,
+                },
             },
         });
     }

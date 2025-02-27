@@ -31,6 +31,7 @@ export const sendCodeOTPVerifyConfirmEmailValidationSchema = joi.object().keys({
 export const loginValidationSchema = joi.object().keys({
     email: generalFields.email.required(),
     password: generalFields.password.required(),
+    'ln': generalFields.acceptLanguage
 }).options({allowUnknown: false}).required()
 
 // google Login

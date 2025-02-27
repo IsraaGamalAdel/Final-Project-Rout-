@@ -12,7 +12,25 @@ import { fileValidationTypes } from './../../utils/multer/local.multer.js';
 const router = Router({mergeParams: true , caseSensitive: true , strict: false});
 
 
-router.post("/addApplicationCV/:jobId" , 
+// router.post("/addApplicationCV" , 
+//     authentication(),
+//     authorization(endPoint.create),
+//     uploadCloudinaryFile(fileValidationTypes.document).single('userCV'),
+//     validation(validators.createJobsValidation),
+//     applicationService.createApplication
+// );
+
+
+// router.get('/getApplication' ,
+//     authentication(),
+//     authorization(endPoint.roleApplications),
+//     validation(validators.getAllApplicationsValidation),
+//     applicationService.getAllApplications
+// );
+
+
+
+router.post("/addApplicationCV/:companyId/jobs/:jobId" , 
     authentication(),
     authorization(endPoint.create),
     uploadCloudinaryFile(fileValidationTypes.document).single('userCV'),
@@ -21,7 +39,38 @@ router.post("/addApplicationCV/:jobId" ,
 );
 
 
+router.get('/getApplication/:companyId/jobs/:jobId' ,
+    authentication(),
+    authorization(endPoint.roleApplications),
+    validation(validators.getAllApplicationsValidation),
+    applicationService.getAllApplications
+);
+
+
+router.patch("/:applicationId/status", 
+    authentication(),
+    authorization(endPoint.create),
+    validation(validators.updateApplicationStatusValidation),
+    applicationService.updateApplicationStatus
+);
+
+
+router.get('/downloadApplicationsExcel/:companyId' ,
+    authentication(),
+    validation(validators.getApplicationsByCompanyAndDateValidation),
+    authorization(endPoint.roleApplications),
+    applicationService.downloadApplicationsExcel
+);
 
 
 
 export default router;
+
+
+
+// router.get('/company' ,
+//     authentication(),
+//     authorization(endPoint.roleApplications),
+//     validation(validators.getApplicationsByCompanyAndDateValidation),
+//     applicationService.getApplicationsByCompany
+// );

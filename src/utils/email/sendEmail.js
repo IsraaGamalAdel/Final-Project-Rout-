@@ -8,6 +8,7 @@ export const subjectTypes = {
 };
 
 
+// Send Email Code
 export const verifyEmailTemplate = ({code , email } = {}) =>{
     return ` <!DOCTYPE html>
     <html lang="ar">
@@ -99,7 +100,52 @@ export const verifyEmailTemplate = ({code , email } = {}) =>{
     `
 };
 
+// Send Email Job
+export const emailJobAccepted = ({ job, applicationUser }) => {
+    return `
+    <!DOCTYPE html>
+    <html lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <style type="text/css">
+                body { background-color: #9b4caf7f; font-family: Arial, sans-serif; }
+                .container { margin: auto; padding: 30px; text-align: center; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2 style=" background-color: #9b4caf; color: #fff; ">Hello ${applicationUser.firstName} ${applicationUser.lastName}</h2>
+                <p style= " font-size: 16px;">We are pleased to inform you that your application for the position of <b>${job.jobTitle}</b> has been accepted.</p>
+                <p style= " font-size: 16px;">We will contact you for the next steps.</p>
+                <p style= " font-size: 16px;">Best regards,<br>HR Team</p>
+            </div>
+        </body>
+    </html>`;
+};
 
+export const emailJobRejected = ({ job, applicationUser }) => {
+    return `
+    <!DOCTYPE html>
+    <html lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <style type="text/css">
+                body { background-color: #ff4c4c7f; font-family: Arial, sans-serif; }
+                .container { margin: auto; padding: 30px; text-align: center; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2 style=" background-color: #ff4c4c; color: #fff; ">Dear ${applicationUser.firstName} ${applicationUser.lastName}</h2>
+                <p style= " font-size: 16px;">We appreciate your interest in the <b>${job.jobTitle}</b> position. Unfortunately, after careful consideration, we have decided to move forward with other candidates.</p>
+                <p style= " font-size: 16px;">We wish you the best in your career journey.</p>
+                <p style= " font-size: 16px;">Regards,<br>HR Team</p>
+            </div>
+        </body>
+    </html>`;
+};
+
+// Send Email Data nodemailer
 export const sendEmail = async ({to=[] , cc=[] , bcc=[] , subject = "", text="" , html="" , attachments=[]}={}) => {
 
     const transporter = nodemailer.createTransport({

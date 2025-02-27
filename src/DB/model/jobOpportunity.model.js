@@ -17,7 +17,7 @@ export const workingTimeTypes = {
 export const seniorityLevelTypes = {
     fresh: "fresh",
     junior: "junior",
-    middle: "middle", // middle level
+    middle: "middle",
     senior: "senior",
     teamLead: "teamLead", 
 }
@@ -86,15 +86,17 @@ const jobOpportunitySchema = new Schema({
         required: true
     },
 } , { 
-    timestamps: true 
+    timestamps: true ,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
 });
 
 
-jobOpportunitySchema.virtual('application', {
-    ref: 'application',
-    localField: '_id',
-    foreignField: 'jobId'
-});
+// jobOpportunitySchema.virtual('application', {
+//     ref: 'application',
+//     localField: '_id',
+//     foreignField: 'jobId'
+// });
 
 
 

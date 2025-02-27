@@ -71,6 +71,7 @@ const companySchema = new Schema({
     toObject: { virtuals: true },
 });
 
+
 companySchema.virtual("jobs", {
     ref: "JobOpportunity",
     localField: "_id",

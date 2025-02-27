@@ -12,7 +12,7 @@ export const signupValidationSchema = joi.object().keys({
         password: generalFields.password.required(),
         confirmPassword: generalFields.confirmPassword.valid(joi.ref('password')).required(),
         phone: generalFields.phone.required(),
-        'accept-language': generalFields.acceptLanguage
+        'ln': generalFields.acceptLanguage
 }).options({allowUnknown: false}).required();
 
 // confirmEmail

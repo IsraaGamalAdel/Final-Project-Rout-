@@ -37,7 +37,7 @@ export const generalFields = {
     DOB: joi.date().less("now"),
     id: joi.string().custom(validationObjectId),
     messages: joi.string().pattern(new RegExp(/^[a-zA-Z\u0621-\u064Aء-ئ][^#&<>\"~;$^%{}?]{2,500000}$/)), // to Arabic and English
-    code: joi.string().pattern(new RegExp(/^\d{6}$/)),
+    code: joi.string().pattern(new RegExp(/^[A-Za-z0-9\-+_$!%*#?&]{6}$/ )),  //    (/^\d{6}$/)
     fileObject,
     files: joi.object(fileObject),
     address: joi.string().pattern(new RegExp(/^[a-zA-Z\u0621-\u064Aء-ئ0-9][^#&<>\"~;$^%{}?]{2,100}$/)),

@@ -1,4 +1,3 @@
-import { OAuth2Client } from 'google-auth-library';
 import {providerTypes, userModel} from "../../../DB/model/User.model.js";
 import { roleTypes } from '../../../middleware/auth.middleware.js';
 import { errorAsyncHandler } from "../../../utils/response/error.response.js";
@@ -6,7 +5,7 @@ import { successResponse } from '../../../utils/response/success.response.js';
 import {  decodeToken, generateToken2, tokenTypes } from "../../../utils/token/token.js";
 import { compareHash } from "../../../utils/security/hash.security.js";
 import * as dbService from '../../../DB/db.service.js';
-
+import {OAuth2Client} from 'google-auth-library' ;
 
 
 //signIn With Email

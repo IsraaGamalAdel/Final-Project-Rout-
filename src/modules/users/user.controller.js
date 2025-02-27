@@ -83,7 +83,8 @@ router.delete('/profile/delete_images/cover' ,
 router.delete('/profile/delete_account' , 
     authentication() , 
     authorization(endPoint.profile), 
-    userService.SoftDeleteAccount);
+    userService.SoftDeleteAccount
+);
 
 // Restore Account
 router.patch('/profile/restore_account' , 

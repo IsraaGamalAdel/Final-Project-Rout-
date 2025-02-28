@@ -138,9 +138,9 @@ export const login = errorAsyncHandler(
                     refreshToken
                 },
                 user: {
+                    _id: user._id,
                     userName: user.userName,
                     role: user.role,
-                    email: user.email,
                 },
             }
         });
@@ -168,10 +168,14 @@ export const refreshToken = errorAsyncHandler(
                 token: {
                     accessToken,
                     refreshToken
-                }
+                },
+                user: {
+                    _id: user._id,
+                    userName: user.userName,
+                    role: user.role,
+                },
             }
         });
-
     }
 );
 

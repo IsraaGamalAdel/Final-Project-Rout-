@@ -22,6 +22,7 @@ const deleteExpiredOTPs = async () => {
         },
         data: {
             $unset: {
+                deleted: 1,
                 otpExpiresAt: 1,
                 emailOTP: 1,
                 forgotPasswordOTP: 1,
@@ -34,7 +35,7 @@ const deleteExpiredOTPs = async () => {
     // console.log('Expired OTP codes have been deleted.');
 };
 
-// cron.schedule('*/2 * * * *', deleteExpiredOTPs);
+// cron.schedule('*/1 * * * *', deleteExpiredOTPs);
 
 cron.schedule('0 */6 * * *', deleteExpiredOTPs);
 

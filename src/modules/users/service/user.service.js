@@ -28,6 +28,9 @@ export const getLoginUserAccountData  = errorAsyncHandler(
             return next(new Error("In_valid account user not found" , {cause: 404}));
         }
 
+        // user.phone = decodeEncryption({ cipherText: user.phone});
+        user.phone = user.getDecryptedMobile();
+
         const userData = user.toObject();
         if (userData.id) {
             delete userData.id;
@@ -79,19 +82,21 @@ export const updateUserAccount = errorAsyncHandler(
             req.body.phone = generateEncryption({ plainText: req.body.phone });
         }
 
-        const allowedUpdates = ['phone', 'DOB', 'firstName', 'lastName', 'gender'];
-        const updateData = {};
+        // const allowedUpdates = ['phone', 'DOB', 'firstName', 'lastName', 'gender'];
+        // const updateData = {};
 
-        allowedUpdates.forEach((field) => {
-            if (req.body[field] !== undefined) {
-                updateData[field] = req.body[field];
-            }
-        });
+        // allowedUpdates.forEach((field) => {
+        //     if (req.body[field] !== undefined) {
+        //         updateData[field] = req.body[field];
+                
+        //     }
+        // });
 
         const user = await dbService.findByIdAndUpdate({
             model: userModel,
             id: req.user._id,
-            data: updateData,
+            data: req.body,
+            select: '-__v -password -deleted  -confirmEmail',
             options: { new: true, runValidators: true },
         });
 

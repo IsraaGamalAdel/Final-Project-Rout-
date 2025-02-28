@@ -7,7 +7,8 @@ export const pagination =  async({
     model,
     filter = {},
     populate = [],
-    select = ''
+    select = '',
+    sort = '-createdAt' 
 } = {}) => {
 
     page = parseInt(parseInt(page) < 1 ? 1 : page);
@@ -22,7 +23,8 @@ export const pagination =  async({
         select,
         filter,
         skip,
-        limit: size
+        limit: size,
+        sort
     })
 
     return {

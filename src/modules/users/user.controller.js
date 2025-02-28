@@ -83,7 +83,8 @@ router.delete('/profile/delete_images/cover' ,
 router.delete('/profile/delete_account' , 
     authentication() , 
     authorization(endPoint.profile), 
-    userService.SoftDeleteAccount);
+    userService.SoftDeleteAccount
+);
 
 // Restore Account
 router.patch('/profile/restore_account' , 
@@ -92,6 +93,13 @@ router.patch('/profile/restore_account' ,
     authorization(endPoint.profile), 
     userService.restoreAccount
 );
+
+
+router.patch('/profile/addFriends/:friendId' , 
+    authentication() ,  
+    userService.addFriends
+);
+
 
 
 export default router;

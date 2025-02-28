@@ -5,7 +5,7 @@ import multer from "multer";
 export const fileValidationTypes = {
     image : ['image/png' , 'image/jpg' , 'image/jpeg'],
     video : ['video/mp4' , 'video/mkv'],
-    document : ['application/json' , 'application/pdf' ],
+    document: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
     text: ['text/plain']
 };
 

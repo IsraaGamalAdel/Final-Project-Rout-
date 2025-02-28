@@ -48,7 +48,9 @@ const userSchema = new Schema({
     updateEmailOTP: String,
     password:{
         type: String,
-        required: true
+        required: (data) => {
+            return data?.provider === providerTypes.google ? false : true
+        }
     },
     // OTP Forgot-Password
     forgotPasswordOTP: String,
@@ -83,7 +85,8 @@ const userSchema = new Schema({
     deletedAt: Date,
     bannedAt: Date,
     blockedUsers: [{type:Types.ObjectId , ref: "User"}],
-    updatedBy: {type:Types.ObjectId , ref: "User"}
+    updatedBy: {type:Types.ObjectId , ref: "User"},
+    friends : [{type:Types.ObjectId , ref: "User"}],
 },{
     timestamps: true,
     toObject:{ virtuals: true},
@@ -91,6 +94,8 @@ const userSchema = new Schema({
         virtuals: true
     }
 })
+
+
 
 userSchema.virtual('userName').set(function(value) {
     this.firstName = value.split(" ")[0]
@@ -131,3 +136,7 @@ userSchema.methods.getDecryptedMobile = function () {
 
 
 export const userModel = mongoose.models.User || model("User" , userSchema);
+
+
+
+export const socketConnection = new Map();

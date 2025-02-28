@@ -57,14 +57,26 @@ const companySchema = new Schema({
     }],
     bannedAt: Date,
     deletedAt: Date,
+    deletedBy: {
+        type: Types.ObjectId,   
+        ref: "User"
+    },
 
     legalAttachment: { secure_url: String , public_id: String },
 
     approvedByAdmin: { type: Boolean, }
 } , {
-    timestamps: true
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
 });
 
+
+companySchema.virtual("jobs", {
+    ref: "JobOpportunity",
+    localField: "_id",
+    foreignField: "companyId",
+});
 
 
 

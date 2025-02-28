@@ -5,11 +5,14 @@ import authController from'./modules/auth/auth.controller.js';
 import usersController from './modules/users/user.controller.js';
 import adminController from './modules/admin/admin.controller.js';
 import companyController from './modules/company/company.controller.js';
+import applicationController from './modules/application/application.controller.js';
+import chatController from './modules/chat/chat.controller.js';
 import cors from 'cors'; // upload Deployment 
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { createHandler } from 'graphql-http/lib/use/express';
 import { schema } from './modules/modules.schema.js';
+
 
 
 // API
@@ -22,6 +25,21 @@ const bootstrap = async (app , express) => {
     app.use(cors());
     // app.use('/uploads' , express.static(path.resolve('./src/uploads')));
 
+
+    // app.all(`*`, (req, res, next) => {
+    //     console.log(
+    //     `
+    //         User with ip: ${req.ip} send request with:
+    //         URL: ${req.url}
+    //         method: ${req.method}
+    //         body: ${JSON.stringify(req.body)}
+    //         Headers:${JSON.stringify(req.headers['en'])}
+    //     `
+    //     );
+    //     next();
+    // });
+
+
     app.get('/' , (req , res ,next) => {
         return res.status(200).json({
             message : "hello world"
@@ -33,6 +51,8 @@ const bootstrap = async (app , express) => {
     app.use(`${url}/users` , usersController);
     app.use(`${url}/admin` , adminController);
     app.use(`${url}/company` , companyController);
+    app.use(`${url}/application` , applicationController);
+    app.use(`${url}/chat` , chatController);
 
     app.use(globalErrorHandling);
 

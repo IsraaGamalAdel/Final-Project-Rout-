@@ -1,5 +1,7 @@
 import  mongoose, { model, Schema, Types } from "mongoose";
 
+
+
 export const jobOpportunityTypes = {
     cairo: "cairo",
     helwan: "helwan",
@@ -8,14 +10,14 @@ export const jobOpportunityTypes = {
 };
 
 export const workingTimeTypes = {
-    fullTime: "fullTime",
-    partTime: "partTime",
+    fullTime: "full Time",
+    partTime: "part Time",
 };
 
 export const seniorityLevelTypes = {
     fresh: "fresh",
     junior: "junior",
-    middle: "middle", // middle level
+    middle: "middle",
     senior: "senior",
     teamLead: "teamLead", 
 }
@@ -82,11 +84,19 @@ const jobOpportunitySchema = new Schema({
         type: Types.ObjectId,
         ref: "Company",
         required: true
-    }
+    },
 } , { 
-    timestamps: true 
+    timestamps: true ,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
 });
 
+
+// jobOpportunitySchema.virtual('application', {
+//     ref: 'application',
+//     localField: '_id',
+//     foreignField: 'jobId'
+// });
 
 
 

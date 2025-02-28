@@ -180,14 +180,3 @@ export const refreshToken = errorAsyncHandler(
 );
 
 
-    // if (user.provider !== providerTypes.system) {
-    //     return next(new Error("Invalid provider type", { cause: 403 }));
-    // }
-
-    // if (user.bannedAt) {
-    //     return next(new Error("User is banned", { cause: 403 }));
-    // }
-
-    // if (user.deleted) {
-    //     return next(new Error("User account is deleted", { cause: 403 }));
-    // }

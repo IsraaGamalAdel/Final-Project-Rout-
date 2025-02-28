@@ -5,7 +5,7 @@ import { userModel } from '../../../DB/model/User.model.js';
 
 const deleteExpiredOTPs = async () => {
     
-    console.log('CRON Job started at:', new Date());
+    // console.log('CRON Job started at:', new Date());
 
     const now = new Date();
     const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
@@ -30,12 +30,12 @@ const deleteExpiredOTPs = async () => {
         }
     });
 
-    console.log('Update Result:', result);
-    console.log('Expired OTP codes have been deleted.');
+    // console.log('Update Result:', result);`
+    // console.log('Expired OTP codes have been deleted.');
 };
 
-cron.schedule('*/2 * * * *', deleteExpiredOTPs);
+// cron.schedule('*/2 * * * *', deleteExpiredOTPs);
 
-// cron.schedule('0 */6 * * *', deleteExpiredOTPs);
+cron.schedule('0 */6 * * *', deleteExpiredOTPs);
 
 export default deleteExpiredOTPs;

@@ -25,18 +25,18 @@ const bootstrap = async (app , express) => {
     // app.use('/uploads' , express.static(path.resolve('./src/uploads')));
 
 
-    app.all(`*`, (req, res, next) => {
-        console.log(
-        `
-            User with ip: ${req.ip} send request with:
-            URL: ${req.url}
-            method: ${req.method}
-            body: ${JSON.stringify(req.body)}
-            Headers:${JSON.stringify(req.headers['en'])}
-        `
-        );
-        next();
-    });
+    // app.all(`*`, (req, res, next) => {
+    //     console.log(
+    //     `
+    //         User with ip: ${req.ip} send request with:
+    //         URL: ${req.url}
+    //         method: ${req.method}
+    //         body: ${JSON.stringify(req.body)}
+    //         Headers:${JSON.stringify(req.headers['en'])}
+    //     `
+    //     );
+    //     next();
+    // });
 
 
     app.get('/' , (req , res ,next) => {

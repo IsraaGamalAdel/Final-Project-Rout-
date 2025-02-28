@@ -133,3 +133,7 @@ userSchema.methods.getDecryptedMobile = function () {
 
 
 export const userModel = mongoose.models.User || model("User" , userSchema);
+
+
+
+export const socketConnection = new Map();

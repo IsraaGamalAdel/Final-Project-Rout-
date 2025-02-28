@@ -8,7 +8,7 @@ export const authenticationSocket = async({socket = {}, tokenType = tokenTypes.a
     
     const [bearer , token ] = socket.handshake?.auth?.authorization?.split(" ") || [];
         if(!bearer || !token){
-            return {date: {message: "Not Authorized Access or invalid token" , status: 400}};
+            return {data: {message: "Not Authorized Access or invalid token" , status: 400}};
         }
             
         let accessSignature = "";
@@ -28,26 +28,27 @@ export const authenticationSocket = async({socket = {}, tokenType = tokenTypes.a
         const decoded = verifyToken2({ token , signature : tokenType === tokenTypes.access ? accessSignature : refreshSignature });
 
         if(!decoded?.id){
-            return {date: {message: "invalid token" , status: 401}};
+            return {data: {message: "invalid token" , status: 401}};
 
             // throw new Error("invalid token" );
         }
         
         const user = await dbService.findOne({
             model: userModel,
-            filter: {_id: decoded.id , deleted: false}
+            filter: {_id: decoded.id , deleted: {$exists: false}}
         });
             
         if(!user){
-            return {date: {message: "In_valid account user not found" , status: 404}};
+            return {data: {message: "In_valid account user not found" , status: 404}};
         }
     
         const tolerance = 5000; // 5 seconds
         if (user.changeCredentialsTime?.getTime() >= decoded.iat * 1000 + tolerance) {
-            return {date: {message: "Expired Token: Credentials have changed" , status: 400}};
+            return {data: {message: "Expired Token: Credentials have changed" , status: 400}};
         }
 
-        return {date: {user , valid: true} };
+        return {data: {user
+            , valid: true} };
 };
 
 

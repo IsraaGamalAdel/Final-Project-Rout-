@@ -6,6 +6,7 @@ import usersController from './modules/users/user.controller.js';
 import adminController from './modules/admin/admin.controller.js';
 import companyController from './modules/company/company.controller.js';
 import applicationController from './modules/application/application.controller.js';
+import chatController from './modules/chat/chat.controller.js';
 import cors from 'cors'; // upload Deployment 
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -51,6 +52,7 @@ const bootstrap = async (app , express) => {
     app.use(`${url}/admin` , adminController);
     app.use(`${url}/company` , companyController);
     app.use(`${url}/application` , applicationController);
+    app.use(`${url}/chat` , chatController);
 
     app.use(globalErrorHandling);
 

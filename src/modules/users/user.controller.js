@@ -95,4 +95,11 @@ router.patch('/profile/restore_account' ,
 );
 
 
+router.patch('/profile/addFriends/:friendId' , 
+    authentication() ,  
+    userService.addFriends
+);
+
+
+
 export default router;

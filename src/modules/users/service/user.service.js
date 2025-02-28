@@ -16,7 +16,12 @@ export const getLoginUserAccountData  = errorAsyncHandler(
         const user = await dbService.findOne({
             model: userModel,
             filter: { _id: req.user._id },
-            select: '-__v -password -deleted  -confirmEmail'
+            select: '-__v -password -deleted  -confirmEmail',
+            populate: [
+                {
+                    path: "friends" , select: "firstName lastName email profilePic"
+                }
+            ]
         })
 
         if(!user){
@@ -404,3 +409,39 @@ export const restoreAccount = errorAsyncHandler(
 );
 
 
+
+
+
+
+export const addFriends = errorAsyncHandler(
+    async(req ,res , next) => {
+        const {friendId} = req.params;
+
+        const friend = await dbService.findOneAndUpdate({
+            model: userModel,
+            filter: {_id: friendId, deleted: {$exists: false} } ,
+            data: {
+                $addToSet: { friends: req.user._id}
+            },
+            options: {new: true}
+        })
+
+        if (!friend) {
+            return next(new Error("User not found" , {cause: 404}));
+        }
+
+        const user = await dbService.findByIdAndUpdate({
+            model: userModel,
+            id: req.user._id,
+            data: {
+                $addToSet: { friends: friendId}
+            },
+            options: {new: true}
+        })
+        return successResponse({ res, message: "Add Friend Successfully" , 
+            data: {
+                user
+            }
+        });
+    }
+);

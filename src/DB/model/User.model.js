@@ -85,7 +85,8 @@ const userSchema = new Schema({
     deletedAt: Date,
     bannedAt: Date,
     blockedUsers: [{type:Types.ObjectId , ref: "User"}],
-    updatedBy: {type:Types.ObjectId , ref: "User"}
+    updatedBy: {type:Types.ObjectId , ref: "User"},
+    friends : [{type:Types.ObjectId , ref: "User"}],
 },{
     timestamps: true,
     toObject:{ virtuals: true},
@@ -93,6 +94,8 @@ const userSchema = new Schema({
         virtuals: true
     }
 })
+
+
 
 userSchema.virtual('userName').set(function(value) {
     this.firstName = value.split(" ")[0]

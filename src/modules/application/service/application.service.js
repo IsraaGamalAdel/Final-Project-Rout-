@@ -4,7 +4,7 @@ import { errorAsyncHandler } from "../../../utils/response/error.response.js";
 import { successResponse } from "../../../utils/response/success.response.js";
 import { jobOpportunityModel } from "../../../DB/model/jobOpportunity.model.js";
 import cloudinary from './../../../utils/multer/cloudinary.js';
-import { applicationModel, statusTypes } from "../../../DB/model/application.model.js";
+import { applicationModel, statusTypes } from '../../../DB/model/Application.model.js';
 import { pagination } from "../../../utils/security/pagination.security.js";
 import { companyModel } from './../../../DB/model/Company.model.js';
 import { roleTypes } from "../../../middleware/auth.middleware.js";
@@ -67,6 +67,40 @@ export const createApplication = errorAsyncHandler(
             message: "Application created successfully",
             status: 201,
             data: { newApplication }
+        });
+    }
+);
+
+export const getSingleApplication = errorAsyncHandler(
+    async (req, res, next) => {
+        const application = await dbService.findOne({
+            model: applicationModel,
+            filter: { _id: req.params.applicationId },
+            populate: [
+                {
+                    path: "userData",
+                    select: "firstName  lastName  email  phone  role " 
+                },
+                {
+                    path: "jobId",
+                    select: "jobTitle"
+                },
+                {
+                    path: "companyId",
+                    select: "companyName"
+                }
+            ]
+        });
+
+        if (!application) {
+            return next(new Error("Application not found", { cause: 404 }));
+        }
+
+        return successResponse({
+            res,
+            message: "Application found successfully",
+            status: 200,
+            data: { application }
         });
     }
 );

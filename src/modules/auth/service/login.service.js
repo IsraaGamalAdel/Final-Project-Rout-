@@ -40,7 +40,7 @@ export const signIn = errorAsyncHandler(
                     userName: payload.name,
                     email: payload.email,
                     confirmEmail: payload.email_verified,
-                    // image: payload.picture,
+                    image: payload.picture,
                     provider: providerTypes.google
                 }
             })
@@ -77,6 +77,11 @@ export const signIn = errorAsyncHandler(
                     accessToken,
                     refreshToken,
                 },
+                user: {
+                    _id: user._id,
+                    userName: user.userName,
+                    role: user.role,
+                },
             },
         });
     }
@@ -91,7 +96,8 @@ export const login = errorAsyncHandler(
             model: userModel,
             filter: {
                 email ,
-                provider: providerTypes.system
+                provider: providerTypes.system,
+                // deleted: { $exists: false }
             }
         });
 

@@ -29,6 +29,11 @@ const router = Router({mergeParams: true , caseSensitive: true , strict: false})
 // );
 
 
+router.get('/getApplications' ,
+    authentication(),
+    applicationService.getSingleApplication
+);
+
 
 router.post("/addApplicationCV/:companyId/jobs/:jobId" , 
     authentication(),

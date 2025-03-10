@@ -35,7 +35,7 @@ export const authenticationSocket = async({socket = {}, tokenType = tokenTypes.a
         
         const user = await dbService.findOne({
             model: userModel,
-            filter: {_id: decoded.id , deleted: {$exists: false}}
+            filter: {_id: decoded.id , }
         });
             
         if(!user){

@@ -1,5 +1,5 @@
 import path from 'node:path';
-import connectDB from './DB/connection.js';
+import connectDB from '../src/DB/connection.js';
 import { globalErrorHandling } from './utils/response/error.response.js';
 import authController from'./modules/auth/auth.controller.js';
 import usersController from './modules/users/user.controller.js';

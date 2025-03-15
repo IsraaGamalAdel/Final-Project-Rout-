@@ -2,7 +2,6 @@ import path from 'path';
 import * as dotenv from 'dotenv';
 
 dotenv.config({path:(path.resolve('./config/.env.prod'))});
-// dotenv.config({path:(path.resolve('./config/.env.dev'))});
 
 
 export const errorAsyncHandler = (fn) => {

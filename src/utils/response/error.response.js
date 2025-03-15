@@ -3,6 +3,8 @@ import * as dotenv from 'dotenv';
 
 dotenv.config({path:(path.resolve('./config/.env.prod'))});
 
+
+
 export const errorAsyncHandler = (fn) => {
     return (req ,res ,next) => {
         return fn( req ,res ,next).catch(error => {

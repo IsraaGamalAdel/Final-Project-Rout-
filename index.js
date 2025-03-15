@@ -4,7 +4,6 @@ import * as dotenv from 'dotenv';
 // dotenv.config({path:(path.resolve('./config/.env.dev'))});
 // dotenv.config({path:(path.resolve('./config/.env.prod'))});
 
-
 import express from 'express';
 import bootstrap from './src/app.controller.js';
 import chalk from 'chalk';
